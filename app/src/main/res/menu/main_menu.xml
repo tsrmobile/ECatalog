@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/sale_menu"
+        android:checkableBehavior="single">
+        <item android:id="@+id/memu_home"
+            android:icon="@drawable/ic_home_white_36dp"
+            android:title="แคตตาล็อก"/>
+        <item android:id="@+id/menu_report"
+            android:icon="@drawable/ic_description_white_36dp"
+            android:title="รายงานการขายสินค้า"/>
+        <item android:id="@+id/menu_register"
+            android:icon="@drawable/ic_group_add_white_36dp"
+            android:title="สมัครตัวแทน" />
+        <item android:id="@+id/menu_share"
+            android:icon="@drawable/ic_share_white_36dp"
+            android:visible="false"
+            android:title="แชร์ไปยังโซเชียล"/>
+    </group>
+    <group android:id="@+id/social"
+        android:checkableBehavior="single">
+        <item android:title="Social Link">
+            <menu>
+                <item
+                    android:id="@+id/menu_social"
+                    android:icon="@drawable/ic_share_white_36dp"
+                    android:visible="true"
+                    android:title="ขายสินค้าออนไลน์"/>
+            </menu>
+        </item>
+    </group>
+    <group android:id="@+id/system"
+        android:checkableBehavior="single">
+        <item android:title="ระบบ">
+            <menu>
+                <item
+                    android:id="@+id/menu_profile"
+                    android:icon="@drawable/ic_person_white_36dp"
+                    android:visible="false"
+                    android:title="โปรไฟล์"/>
+                <item
+                    android:id="@+id/menu_logout"
+                    android:icon="@drawable/ic_power_settings_new_white_36dp"
+                    android:title="ออกจากระบบ"/>
+            </menu>
+        </item>
+    </group>
+</menu>
