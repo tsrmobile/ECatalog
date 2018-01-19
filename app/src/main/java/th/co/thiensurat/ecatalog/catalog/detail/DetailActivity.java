@@ -25,6 +25,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +54,7 @@ import th.co.thiensurat.ecatalog.utils.Validation;
 
 public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> implements DetailInterface.View {
 
+    private int qty = 1;
     private String type = "0";
     private String title = "0";
     private String province = "0";
@@ -59,8 +62,11 @@ public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> i
     private SpinnerCustomAdapter spinnerCustomAdapter;
     private SpinnerTitleAdapter spinnerTitleAdapter;
 
+    private String discount;
     private ItemOrder itemOrder;
     private CustomDialog customDialog;
+    private DecimalFormat decimalFormat;
+    private DecimalFormatSymbols symbols;
     private List<ItemOrder> itemOrderList = new ArrayList<ItemOrder>();
 
     @Override
@@ -84,11 +90,13 @@ public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> i
     @BindView(R.id.customer_phone) EditText editTextPhone;
     @BindView(R.id.customer_province) Spinner spinnerProvince;
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
-    @BindView(R.id.product_view_qty) TextView viewQty;
+    @BindView(R.id.product_view_qty) EditText viewQty;
     @BindView(R.id.product_view_price) TextView viewPrice;
     @BindView(R.id.product_view_discount) TextView viewdiscount;
     @BindView(R.id.product_view_total) TextView viewTotal;
     @BindView(R.id.content_layout) LinearLayout linearLayout;
+    @BindView(R.id.button_increasement) ImageView imageViewIncrease;
+    @BindView(R.id.button_decreasement) ImageView imageViewDecrease;
     @Override
     public void bindView() {
         ButterKnife.bind(this);
@@ -96,6 +104,7 @@ public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> i
 
     @Override
     public void setupInstance() {
+        symbols = new DecimalFormatSymbols();
         customDialog = new CustomDialog(DetailActivity.this);
     }
 
@@ -104,6 +113,8 @@ public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> i
         getDataFromIntent();
         setToolbar();
         buttonSave.setOnClickListener( onSave() );
+        imageViewIncrease.setOnClickListener( onIncrease() );
+        imageViewDecrease.setOnClickListener( onDecrease() );
         linearLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -112,38 +123,38 @@ public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> i
             }
         });
 
-        spinnerType.setVisibility(View.GONE);
-        spinnerTitle.setVisibility(View.GONE);
-        spinnerProvince.setVisibility(View.GONE);
+        //spinnerType.setVisibility(View.GONE);
+        //spinnerTitle.setVisibility(View.GONE);
+        //spinnerProvince.setVisibility(View.GONE);
     }
 
     @Override
     public void initialize() {
-        //getPresenter().requestProvince("province", "");
+        getPresenter().requestProvince("province", "");
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        /*outState.putParcelable(Constance.STATE_PROVINCE, getPresenter().getDataItemGroup());
+        outState.putParcelable(Constance.STATE_PROVINCE, getPresenter().getDataItemGroup());
         outState.putParcelable(Constance.STATE_TITLE_NAME, getPresenter().getDataTitleGroup());
-        outState.putParcelable(Constance.STATE_TYPE, getPresenter().getDataTypeGroup());*/
+        outState.putParcelable(Constance.STATE_TYPE, getPresenter().getDataTypeGroup());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        /*getPresenter().setDataItemGroup((DataItemGroup) savedInstanceState.getParcelable(Constance.STATE_PROVINCE));
+        getPresenter().setDataItemGroup((DataItemGroup) savedInstanceState.getParcelable(Constance.STATE_PROVINCE));
         getPresenter().setDataTitleGroup((TitleItemGroup) savedInstanceState.getParcelable(Constance.STATE_TITLE_NAME));
-        getPresenter().setDataTypeGroup((DataItemGroup) savedInstanceState.getParcelable(Constance.STATE_TYPE));*/
+        getPresenter().setDataTypeGroup((DataItemGroup) savedInstanceState.getParcelable(Constance.STATE_TYPE));
     }
 
     @Override
     public void restoreView(Bundle savedInstanceState) {
         super.restoreView(savedInstanceState);
-        /*getPresenter().setDataToAdapter(getPresenter().getDataItemGroup());
+        getPresenter().setDataToAdapter(getPresenter().getDataItemGroup());
         getPresenter().setDataTitleToAdapter(getPresenter().getDataTitleGroup());
-        getPresenter().setDataTypeToAdapter(getPresenter().getDataTypeGroup());*/
+        getPresenter().setDataTypeToAdapter(getPresenter().getDataTypeGroup());
     }
 
     @Override
@@ -178,7 +189,7 @@ public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> i
     private void getDataFromIntent() {
         try {
             productItem = getIntent().getParcelableExtra(Constance.KEY_PRODUCT);
-            setItemDetail(productItem);
+            setItemDetail();
             Log.e("image url", productItem.getProductImage());
         } catch (Exception ex) {
             Log.e("getDataFromIntent", ex.getMessage());
@@ -196,29 +207,21 @@ public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> i
         Glide.with(DetailActivity.this).load(url).placeholder(R.drawable.no_image).into(imageView);
     }
 
-    private void setItemDetail(ProductItem item) {
-        /*float discount = 0;
-        if (!item.getPromotionDiscount().equals("0") || !item.getPromotionDiscountPercent().equals("")) {
-            if (item.getPromotionDiscount().equals("0") || item.getPromotionDiscount().equals("")) {
-                discount = Float.parseFloat(item.getPromotionDiscountPercent());
-                discount = (Float.parseFloat(item.getProductPrice()) * discount) / 100;
-            } else {
-                discount = Float.parseFloat(item.getPromotionDiscount());
-            }
-        } else if (!item.getProductDiscount().equals("0") || !item.getProductDiscountPercent().equals("")) {
-            if (item.getProductDiscount().equals("0") || item.getProductDiscount().equals("")) {
-                discount = Float.parseFloat(item.getProductDiscountPercent());
-                discount = (Float.parseFloat(item.getProductPrice()) * discount) / 100;
-            } else {
-                discount = Float.parseFloat(item.getProductDiscount());
-            }
-        }*/
-
+    private void setItemDetail() {
+        symbols.setDecimalSeparator(',');
+        decimalFormat = new DecimalFormat("###,###,###,###", symbols);
         setImageView(productItem.getProductImage());
-        textViewDetail.setText(item.getProductDetail());
-        viewPrice.setText(String.format("%,.0f", Float.parseFloat(item.getProductPrice())) + ".-");
-        viewQty.setText(String.valueOf(1));
-        viewdiscount.setText(String.format("%,.0f", Float.parseFloat(productItem.getProductDiscount())) + ".-");
+        textViewDetail.setText(productItem.getProductDetail());
+        viewPrice.setText(String.format("%,.0f", Float.parseFloat(productItem.getProductPrice())) + ".-");
+        viewQty.setText(String.valueOf(qty));
+        if (productItem.getProductDiscount().equals("0")) {
+            float calculate = Float.parseFloat(productItem.getProductPrice()) * qty;
+            calculate = (calculate / 100) * Float.parseFloat(productItem.getProductDiscountPercent());
+            discount = decimalFormat.format(calculate);
+        } else {
+            discount = String.format("%,.0f", Float.parseFloat(productItem.getProductDiscount()) * qty);
+        }
+        viewdiscount.setText(discount + ".-");
         viewTotal.setText(String.format("%,.0f", Float.parseFloat(productItem.getProductSellPrice())) + ".-");
     }
 
@@ -230,6 +233,47 @@ public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> i
                 formValidation();
             }
         };
+    }
+
+    private View.OnClickListener onIncrease() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageViewIncrease.startAnimation(new AnimateButton().animbutton());
+                viewQty.setText(String.valueOf(qty++));
+                calculateItem(qty);
+            }
+        };
+    }
+
+    private View.OnClickListener onDecrease() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageViewDecrease.startAnimation(new AnimateButton().animbutton());
+                if (qty > 1) {
+                    viewQty.setText(String.valueOf(qty--));
+                    calculateItem(qty);
+                }
+            }
+        };
+    }
+
+    private void calculateItem(int qty) {
+        symbols.setDecimalSeparator(',');
+        decimalFormat = new DecimalFormat("###,###,###,###", symbols);
+        viewPrice.setText(String.format("%,.0f", Float.parseFloat(productItem.getProductPrice()) * qty) + ".-");
+        viewQty.setText(String.valueOf(qty));
+        if (productItem.getProductDiscount().equals("0")) {
+            float calculate = Float.parseFloat(productItem.getProductPrice()) * qty;
+            calculate = (calculate / 100) * Float.parseFloat(productItem.getProductDiscountPercent());
+            discount = decimalFormat.format(calculate);
+        } else {
+            discount = String.format("%,.0f", Float.parseFloat(productItem.getProductDiscount()) * qty);
+        }
+        viewdiscount.setText(discount + ".-");
+        viewdiscount.setText(discount);
+        viewTotal.setText(String.format("%,.0f", Float.parseFloat(productItem.getProductSellPrice()) * qty) + ".-");
     }
 
     @Override
@@ -325,6 +369,7 @@ public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> i
                 .setPrice(productItem.getProductSellPrice())
                 .setDiscountprice(productItem.getProductDiscount())
                 .setCustomertype(type)
+                .setQty(viewQty.getText().toString())
         );
 
         getPresenter().addOrder(orderBodyList);
@@ -347,12 +392,12 @@ public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> i
     }
 
     public void clearForm() {
-        //spinnerType.setSelection(0);
-        //spinnerTitle.setSelection(0);
+        spinnerType.setSelection(0);
+        spinnerTitle.setSelection(0);
         editTextName.setText("");
         editTextLastName.setText("");
         editTextPhone.setText("");
-        //spinnerProvince.setSelection(0);
+        spinnerProvince.setSelection(0);
         setResult(RESULT_OK);
         finish();
     }

@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ import th.co.thiensurat.ecatalog.api.result.ItemAuth;
 import th.co.thiensurat.ecatalog.MainActivity;
 import th.co.thiensurat.ecatalog.R;
 import th.co.thiensurat.ecatalog.base.BaseMvpActivity;
+import th.co.thiensurat.ecatalog.forgetpassword.ForgetPasswordActivity;
 import th.co.thiensurat.ecatalog.network.ConnectionDetector;
 import th.co.thiensurat.ecatalog.utils.AnimateButton;
 import th.co.thiensurat.ecatalog.utils.ChangeTintColor;
@@ -131,6 +134,13 @@ public class AuthActivity extends BaseMvpActivity<AuthInterface.Presenter> imple
 
     @Override
     public void onSuccess() {
+        try {
+            String token = FirebaseInstanceId.getInstance().getToken();
+            Log.e("token", token);
+            getPresenter().senTokenToServer(MyApplication.getInstance().getPrefManager().getPreferrence(Constance.KEY_AGENTID), token);
+        } catch (Exception e) {
+            Log.e("save token", e.getMessage());
+        }
         nextPage();
     }
 
@@ -184,6 +194,7 @@ public class AuthActivity extends BaseMvpActivity<AuthInterface.Presenter> imple
             @Override
             public void onClick(View view) {
                 textViewForgetPassword.startAnimation(new AnimateButton().animbutton());
+                startActivityForResult(new Intent(AuthActivity.this, ForgetPasswordActivity.class), Constance.REQUEST_FORGET);
             }
         };
     }

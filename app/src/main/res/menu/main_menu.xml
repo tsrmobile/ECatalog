@@ -38,6 +38,10 @@
                     android:visible="false"
                     android:title="โปรไฟล์"/>
                 <item
+                    android:id="@+id/menu_change_password"
+                    android:icon="@drawable/ic_dialpad_white_36dp"
+                    android:title="เปลี่ยนรหัสผ่าน"/>
+                <item
                     android:id="@+id/menu_logout"
                     android:icon="@drawable/ic_power_settings_new_white_36dp"
                     android:title="ออกจากระบบ"/>

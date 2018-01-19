@@ -2,7 +2,11 @@ package th.co.thiensurat.ecatalog.auth;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.hwangjr.rxbus.RxBus;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -68,6 +72,36 @@ public class AuthPresenter extends BaseMvpPresenter<AuthInterface.View> implemen
             public void onFailure(Throwable t) {
                 Log.e("Authen", t.getMessage());
                 getView().onDismiss();
+            }
+        });
+    }
+
+    @Override
+    public void senTokenToServer(String id, String token) {
+        serviceManager.updateFCMToken(id, token, new ServiceManager.ServiceManagerCallback() {
+            @Override
+            public void onSuccess(Object result) {
+                Gson gson = new Gson();
+                try {
+                    JSONObject jsonObject = new JSONObject(gson.toJson(result));
+                    if ("SUCCESS".equals(jsonObject.getString("status"))) {
+                        //getView().onDismiss();
+                        //getView().onSuccess();
+                    } else if ("FAIL".equals(jsonObject.getString("status"))) {
+                        //getView().onDismiss();
+                        getView().onFail(jsonObject.getString("message"));
+                    } else {
+                        //getView().onDismiss();
+                        getView().onFail(jsonObject.getString("message"));
+                    }
+                } catch (JSONException e) {
+                    Log.e("json obj", e.getLocalizedMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("fail", t.getLocalizedMessage());
             }
         });
     }

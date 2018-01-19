@@ -21,6 +21,6 @@ public class AuthInterface {
 
     public interface Presenter extends BaseMvpInterface.Presenter<AuthInterface.View> {
         void auth(List<ItemAuth> itemAuths);
-
+        void senTokenToServer(String id, String token);
     }
 }

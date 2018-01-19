@@ -16,4 +16,6 @@ public class ApiURL {
     public static final String SIGNUP_URL = "/android/api/v1.0/toss/registration/";
     public static final String COUNTRY_URL = "/android/api/v1.0/toss/country/";
     public static final String ALL_REPORT_URL = "/android/api/v1.0/toss/report/";
+    public static final String FCM_TOKEN_URL = "/android/api/v1.0/toss/fcm/";
+    public static final String RESET_PASSWORD_URL = "/android/api/v1.0/toss/resetpassword/";
 }

@@ -12,13 +12,14 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,7 +50,7 @@
                         android:drawableTint="@color/DarkGray"
                         android:paddingLeft="8dp"
                         android:gravity="left|center"
-                        android:inputType="text|textCapCharacters"
+                        android:inputType="text"
                         android:imeOptions="actionNext"
                         android:hint="ชื่อผู้ใช้"
                         android:backgroundTint="@android:color/transparent"/>
@@ -118,18 +119,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="15dp"/>
 
-                <TextView
-                    android:id="@+id/foget_password"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="ลืมรหัสผ่าน ?"
-                    android:textSize="16sp"/>
+
 
             </LinearLayout>
 
         </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/foget_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="ลืมรหัสผ่าน ?"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

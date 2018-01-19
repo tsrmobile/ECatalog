@@ -55,7 +55,7 @@ public class ReportFragment extends BaseMvpFragment<ReportInterface.Presenter> i
 
     @Override
     public void setupView() {
-        ((MainActivity)getActivity()).setTitle("REPORTS");
+        ((MainActivity)getActivity()).setTitle("รายงาน");
         setTabLayout();
     }
 

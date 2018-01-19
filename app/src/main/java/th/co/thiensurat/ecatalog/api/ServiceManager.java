@@ -346,4 +346,92 @@ public class ServiceManager {
         });
     }
     /*************************************************End********************************************************/
+
+    /*************************************************Update token**************************************************/
+    public Call<Object> token(String id, String token) {
+        return Service.newInstance( BASE_URL )
+                .getApi( api )
+                .updateToken(id, token);
+    }
+
+    public void updateFCMToken(String id, String token, final ServiceManagerCallback callback) {
+        token(id, token).enqueue(new Callback<Object>() {
+
+
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                Log.e("request update token", response + "");
+                if( callback != null ){
+                    callback.onSuccess( response.body() );
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                Log.e("FCM", t.getLocalizedMessage());
+                if( callback != null ){
+                    callback.onFailure( t );
+                }
+            }
+        });
+    }
+
+    /******************************************************End******************************************************/
+    public Call<Object> reset(String action, String email) {
+        return Service.newInstance( BASE_URL )
+                .getApi( api )
+                .resetPassword(action, email);
+    }
+
+    public void resetPassword(String action, String email, final ServiceManagerCallback callback) {
+        reset(action, email).enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                Log.e("request reset password", response + "");
+                if( callback != null ){
+                    callback.onSuccess( response.body() );
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                Log.e("Reset", t.getLocalizedMessage());
+                if( callback != null ){
+                    callback.onFailure( t );
+                }
+            }
+        });
+    }
+
+    /*************************************************Reset password**************************************************/
+
+    /*******************************************************End*******************************************************/
+
+    /*************************************************Change password**************************************************/
+    public Call<Object> change(String action, String id, String oldpassword, String password) {
+        return Service.newInstance( BASE_URL )
+                .getApi( api )
+                .changePassword(action, id, oldpassword, password);
+    }
+
+    public void changePassword(String action, String id, String oldpassword, String password, final ServiceManagerCallback callback) {
+        change(action, id, oldpassword, password).enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                Log.e("request change password", response + "");
+                if( callback != null ){
+                    callback.onSuccess( response.body() );
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                Log.e("Change", t.getLocalizedMessage());
+                if( callback != null ){
+                    callback.onFailure( t );
+                }
+            }
+        });
+    }
+    /********************************************************End*******************************************************/
 }

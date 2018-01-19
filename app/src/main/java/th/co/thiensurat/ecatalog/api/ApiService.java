@@ -22,7 +22,9 @@ import static th.co.thiensurat.ecatalog.api.ApiURL.AUTH_URL;
 import static th.co.thiensurat.ecatalog.api.ApiURL.BANNER_URL;
 import static th.co.thiensurat.ecatalog.api.ApiURL.COUNTRY_URL;
 import static th.co.thiensurat.ecatalog.api.ApiURL.DATA_URL;
+import static th.co.thiensurat.ecatalog.api.ApiURL.FCM_TOKEN_URL;
 import static th.co.thiensurat.ecatalog.api.ApiURL.PRODUCT_URL;
+import static th.co.thiensurat.ecatalog.api.ApiURL.RESET_PASSWORD_URL;
 import static th.co.thiensurat.ecatalog.api.ApiURL.SIGNUP_URL;
 
 /**
@@ -60,4 +62,13 @@ public interface ApiService {
 
     @GET( ALL_REPORT_URL )
     Call<AllItemResultGroup> getAllReport(@Query("data") String data, @Query("id") String id);
+
+    @GET( FCM_TOKEN_URL )
+    Call<Object> updateToken(@Query("id") String id, @Query("token") String token);
+
+    @GET( RESET_PASSWORD_URL )
+    Call<Object> resetPassword(@Query("action") String action, @Query("email") String email);
+
+    @GET( RESET_PASSWORD_URL )
+    Call<Object> changePassword(@Query("action") String action, @Query("id") String id, @Query("oldpassword") String oldpassword, @Query("newpassword") String password);
 }

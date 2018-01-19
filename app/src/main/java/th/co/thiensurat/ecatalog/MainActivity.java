@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 import th.co.thiensurat.ecatalog.auth.AuthActivity;
 import th.co.thiensurat.ecatalog.base.BaseMvpActivity;
 import th.co.thiensurat.ecatalog.catalog.CatalogFragment;
+import th.co.thiensurat.ecatalog.changepassword.ChangePasswordFragment;
 import th.co.thiensurat.ecatalog.profile.ProfileActivity;
 import th.co.thiensurat.ecatalog.registration.RegistrationFragment;
 import th.co.thiensurat.ecatalog.registration.general.GeneralFragment;
@@ -113,7 +114,7 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
         textViewName = (TextView) header.findViewById(R.id.name);
         imageViewProfile = (ImageView) header.findViewById(R.id.image_profile);
 
-        textVersion.setText("App v." + appVersion() + " (Beta)");
+        textVersion.setText("App v. " + appVersion() + "");
 
         String title = MyApplication.getInstance().getPrefManager().getPreferrence(Constance.KEY_TITLE);
         String firstname = MyApplication.getInstance().getPrefManager().getPreferrence(Constance.KEY_FIRSTNAME);
@@ -197,6 +198,13 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
                 break;
             case R.id.menu_profile :
                 startActivityForResult(new Intent(getApplicationContext(), ProfileActivity.class), Constance.REQUEST_PROFILE);
+                break;
+            case R.id.menu_change_password :
+                if (currentFragment instanceof ChangePasswordFragment) {
+                    drawerLayout.closeDrawers();
+                } else {
+                    transaction.replace(R.id.container, ChangePasswordFragment.getInstance(), "ChangePasswordFragment").addToBackStack(null).commit();
+                }
                 break;
             case R.id.menu_logout :
                 MyApplication.getInstance().getPrefManager().clear();

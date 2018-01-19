@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "316117736876",
+    "firebase_url": "https://tossapplication.firebaseio.com",
+    "project_id": "tossapplication",
+    "storage_bucket": "tossapplication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316117736876:android:28720b628e0254a8",
+        "android_client_info": {
+          "package_name": "th.co.thiensurat.ecatalog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316117736876-oldaa03h06c06gd126ut24dqasm40idr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "th.co.thiensurat.ecatalog",
+            "certificate_hash": "40fcaebe36879e99ed9d085c28b9ceb88380bc76"
+          }
+        },
+        {
+          "client_id": "316117736876-v1657b1fs8cnj4lpm6lj39jfgma9uraq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpUdWQtJohamF4V4rUDw-spa4MnHse3hs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316117736876-v1657b1fs8cnj4lpm6lj39jfgma9uraq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

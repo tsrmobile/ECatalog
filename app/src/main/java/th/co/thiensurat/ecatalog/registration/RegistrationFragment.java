@@ -68,7 +68,7 @@ public class RegistrationFragment extends BaseMvpFragment<RegistrationInterface.
 
     @Override
     public void setupView() {
-        ((MainActivity)getActivity()).setTitle("REGISTRATION");
+        ((MainActivity)getActivity()).setTitle("สมัครตัวแทนขาย");
         setTabLayout();
         setHasOptionsMenu(true);
     }

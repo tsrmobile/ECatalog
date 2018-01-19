@@ -32,6 +32,7 @@ public class RequestOrder {
         private String price;
         private String discountprice;
         private String customertype;
+        private String qty;
 
         public String getTitleId() {
             return titleId;
@@ -129,6 +130,15 @@ public class RequestOrder {
 
         public orderBody setCustomertype(String customertype) {
             this.customertype = customertype;
+            return this;
+        }
+
+        public String getQty() {
+            return qty;
+        }
+
+        public orderBody setQty(String qty) {
+            this.qty = qty;
             return this;
         }
     }
