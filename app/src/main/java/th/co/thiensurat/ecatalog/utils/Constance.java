@@ -12,10 +12,12 @@ public class Constance {
     public static int REQUEST_FORGET = 4;
     public static int REQUEST_SOCIAL = 5;
     public static int REQUEST_SHARE_LINK = 6;
+    public static int REQUEST_SET_PIN = 7;
 
     public static final String DATEPICKER_TAG = "datepicker";
 
     public static String KEY_PRODUCT = "PRODUCT";
+    public static String KEY_PIN = "PIN";
 
     public static String STATE_PRODUCT = "STATE_PRODUCT";
     public static String STATE_PROVINCE = "STATE_PROVINCE";

@@ -124,6 +124,7 @@ public class SuccessFragment extends BaseMvpFragment<SuccessInterface.Presenter>
 
     @Override
     public void onFail(String fail) {
+        swipeRefreshLayoutComplete.setRefreshing(false);
         relativeLayoutFail.setVisibility(View.VISIBLE);
         recyclerViewComplete.setVisibility(View.GONE);
         textViewFail.setText(fail);

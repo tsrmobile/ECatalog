@@ -29,6 +29,7 @@ import th.co.thiensurat.ecatalog.auth.AuthActivity;
 import th.co.thiensurat.ecatalog.base.BaseMvpActivity;
 import th.co.thiensurat.ecatalog.catalog.CatalogFragment;
 import th.co.thiensurat.ecatalog.changepassword.ChangePasswordFragment;
+import th.co.thiensurat.ecatalog.pinview.PinActivity;
 import th.co.thiensurat.ecatalog.profile.ProfileActivity;
 import th.co.thiensurat.ecatalog.registration.RegistrationFragment;
 import th.co.thiensurat.ecatalog.registration.general.GeneralFragment;
@@ -205,6 +206,9 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
                 } else {
                     transaction.replace(R.id.container, ChangePasswordFragment.getInstance(), "ChangePasswordFragment").addToBackStack(null).commit();
                 }
+                break;
+            case R.id.menu_pin :
+                startActivityForResult(new Intent(getApplicationContext(), PinActivity.class), Constance.REQUEST_SET_PIN);
                 break;
             case R.id.menu_logout :
                 MyApplication.getInstance().getPrefManager().clear();

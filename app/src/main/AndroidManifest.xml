@@ -94,8 +94,10 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".forgetpassword.ForgetPasswordActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".forgetpassword.ForgetPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".pinview.PinActivity"></activity>
     </application>
 
 </manifest>

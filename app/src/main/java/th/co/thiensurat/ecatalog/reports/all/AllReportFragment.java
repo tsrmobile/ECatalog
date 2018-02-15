@@ -121,6 +121,7 @@ public class AllReportFragment extends BaseMvpFragment<AllReportInterface.Presen
 
     @Override
     public void onFail(String fail) {
+        swipeRefreshLayout.setRefreshing(false);
         relativeLayoutFail.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
         textViewFail.setText(fail);

@@ -125,6 +125,7 @@ public class CancelFragment extends BaseMvpFragment<CancelInterface.Presenter> i
 
     @Override
     public void onFail(String fail) {
+        swipeRefreshLayout.setRefreshing(false);
         layoutCancel.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
         textViewCancel.setText(fail);

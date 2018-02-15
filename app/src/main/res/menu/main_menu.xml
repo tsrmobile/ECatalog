@@ -39,8 +39,12 @@
                     android:title="โปรไฟล์"/>
                 <item
                     android:id="@+id/menu_change_password"
-                    android:icon="@drawable/ic_dialpad_white_36dp"
+                    android:icon="@drawable/ic_lock_outline_black_36dp"
                     android:title="เปลี่ยนรหัสผ่าน"/>
+                <item
+                    android:id="@+id/menu_pin"
+                    android:icon="@drawable/ic_dialpad_white_36dp"
+                    android:title="ตั้งค่า PIN"/>
                 <item
                     android:id="@+id/menu_logout"
                     android:icon="@drawable/ic_power_settings_new_white_36dp"
