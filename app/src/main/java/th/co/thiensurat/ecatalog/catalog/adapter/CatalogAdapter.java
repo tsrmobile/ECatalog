@@ -53,7 +53,13 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.ViewHold
                 .load(item.getProductImage())
                 .placeholder(R.drawable.no_image)
                 .into(holder.productImage);
-        holder.productName.setText(item.getProductName());
+
+        if (item.getProductName().length() > 20) {
+            holder.productName.setText(item.getProductName().substring(0, 20) + "...");
+        } else {
+            holder.productName.setText(item.getProductName());
+        }
+
         holder.productPrice.setText(String.format("%,.0f",Float.parseFloat(item.getProductPrice()))+".-");
 
         holder.textPrice.addPiece(new BabushkaText.Piece.Builder(String.format("%,.0f",Float.parseFloat(item.getProductPrice()))+"")

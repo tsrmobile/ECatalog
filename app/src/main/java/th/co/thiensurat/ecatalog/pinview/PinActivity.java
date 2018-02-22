@@ -59,14 +59,14 @@ public class PinActivity extends AppCompatActivity {
                 if (pinTemp.isEmpty()) {
                     pinTemp = pin;
                     pinLockView.resetPinLockView();
-                    textViewName.setText("ยืนยันรหัสพิน");
+                    textViewName.setText("ยืนยันรหัส PIN");
                 } else {
                     if (pinTemp.equals(pin)) {
                         MyApplication.getInstance().getPrefManager().setPreferrence(Constance.KEY_PIN, pin);
                         finish();
                     } else {
                         pinLockView.resetPinLockView();
-                        textViewName.setText("รหัสพินไม่ถูกต้อง");
+                        textViewName.setText("รหัส PIN ไม่ถูกต้อง");
 
                         new CountDownTimer(1500, 1000) {
 
@@ -75,7 +75,7 @@ public class PinActivity extends AppCompatActivity {
 
                             public void onFinish() {
                                 pinTemp = "";
-                                textViewName.setText("ใส่รหัสพิน 4 หลัก");
+                                textViewName.setText("ใส่ PIN 4 หลัก");
                             }
 
                         }.start();

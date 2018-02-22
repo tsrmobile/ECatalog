@@ -65,7 +65,6 @@ public class DetailPresenter extends BaseMvpPresenter<DetailInterface.View> impl
                     DataItemGroup dataGroup = ConvertDataItem.createDataItemGroupFromResult(result);
                     dataItemGroup = dataGroup;
                     setDataItemGroup(dataItemGroup);
-
                     dataItemList = ConvertDataItem.createListDataItemsFromResult(result.getData());
                     getView().setProvince(dataItemList);
                 } else if (result.getMessage().equals("FAIL")) {

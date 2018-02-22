@@ -38,6 +38,7 @@ public class ChangePasswordFragment extends BaseMvpFragment<ChangePasswordInterf
     private String id;
     private String newPassword;
     private String oldPassword;
+    private String StringPlattern = "[a-zA-Z0-9.? ]*";
 
     public ChangePasswordFragment() {
         // Required empty public constructor
@@ -117,6 +118,7 @@ public class ChangePasswordFragment extends BaseMvpFragment<ChangePasswordInterf
     @Override
     public void onFail(String fail) {
         customDialog.dialogFail(fail);
+        clearNewFrom();
     }
 
     @Override
@@ -130,7 +132,11 @@ public class ChangePasswordFragment extends BaseMvpFragment<ChangePasswordInterf
             @Override
             public void onClick(View view) {
                 buttonChangePassword.startAnimation(new AnimateButton().animbutton());
-                if (editTextNewPassword.getText().toString().equals(editTextConfrimPassword.getText().toString())) {
+                if (editTextNewPassword.getText().toString().length() < 8) {
+                    onFail("กรุณาระบุรหัสผ่านใหม่\nอย่างน้อย 8 ตัว");
+                } else if (!editTextNewPassword.getText().toString().matches(StringPlattern) && !editTextConfrimPassword.getText().toString().matches(StringPlattern)) {
+                    onFail("กรุณาระบุเฉพาะ\nตัวอักษรภาษาอังกฤษและตัวเลขเท่านั้น");
+                } else if (editTextNewPassword.getText().toString().equals(editTextConfrimPassword.getText().toString())) {
                     newPassword = editTextConfrimPassword.getText().toString();
                     oldPassword = editTextOldPassword.getText().toString();
                     getPresenter().requestChangePassword("change", id, oldPassword, newPassword);
@@ -143,6 +149,11 @@ public class ChangePasswordFragment extends BaseMvpFragment<ChangePasswordInterf
 
     private void clearFrom() {
         editTextOldPassword.setText("");
+        editTextNewPassword.setText("");
+        editTextConfrimPassword.setText("");
+    }
+
+    private void clearNewFrom() {
         editTextNewPassword.setText("");
         editTextConfrimPassword.setText("");
     }

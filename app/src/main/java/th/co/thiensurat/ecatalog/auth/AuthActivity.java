@@ -20,20 +20,18 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import th.co.thiensurat.ecatalog.api.result.ItemAuth;
 import th.co.thiensurat.ecatalog.MainActivity;
 import th.co.thiensurat.ecatalog.R;
 import th.co.thiensurat.ecatalog.base.BaseMvpActivity;
 import th.co.thiensurat.ecatalog.forgetpassword.ForgetPasswordActivity;
 import th.co.thiensurat.ecatalog.network.ConnectionDetector;
+import th.co.thiensurat.ecatalog.pinview.pinauthen.PinAuthenActivity;
 import th.co.thiensurat.ecatalog.utils.AnimateButton;
 import th.co.thiensurat.ecatalog.utils.ChangeTintColor;
 import th.co.thiensurat.ecatalog.utils.Constance;
 import th.co.thiensurat.ecatalog.utils.CustomDialog;
 import th.co.thiensurat.ecatalog.utils.MyApplication;
-
-import static th.co.thiensurat.ecatalog.utils.Constance.REQUEST_SETTINGS;
 
 public class AuthActivity extends BaseMvpActivity<AuthInterface.Presenter> implements AuthInterface.View {
 
@@ -103,16 +101,16 @@ public class AuthActivity extends BaseMvpActivity<AuthInterface.Presenter> imple
             @Override
             public void onClick(View view) {
                 buttonLogin.startAnimation(new AnimateButton().animbutton());
-                getUsernamePassword();
+                getUsernamePassword(username.getText().toString(), password.getText().toString());
 
             }
         };
     }
 
-    private void getUsernamePassword() {
+    private void getUsernamePassword(String username, String password) {
         ItemAuth item = new ItemAuth();
-        item.setUsername(username.getText().toString());
-        item.setPassword(password.getText().toString());
+        item.setUsername(username);
+        item.setPassword(password);
         itemAuthList.add(item);
         getPresenter().auth(itemAuthList);
     }
@@ -141,10 +139,11 @@ public class AuthActivity extends BaseMvpActivity<AuthInterface.Presenter> imple
         } catch (Exception e) {
             Log.e("save token", e.getMessage());
         }
+        MyApplication.getInstance().getPrefManager().setPreferrence(Constance.KEY_AUTH, "true");
         nextPage();
     }
 
-    @Override
+    /*@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)){
             if (clickBackAain) {
@@ -152,7 +151,7 @@ public class AuthActivity extends BaseMvpActivity<AuthInterface.Presenter> imple
                 return true;
             }
             this.clickBackAain = true;
-            Toast.makeText(AuthActivity.this, "คลิกอีกครั้งเพื่อออกจากแอพพลิเคชั่น", Toast.LENGTH_LONG).show();
+            Toast.makeText(AuthActivity.this, "กด BACK อีกครั้งเพื่อออกจากแอพ", Toast.LENGTH_LONG).show();
 
             new Handler().postDelayed(new Runnable() {
 
@@ -164,20 +163,33 @@ public class AuthActivity extends BaseMvpActivity<AuthInterface.Presenter> imple
             return false;
         }
         return true;
+    }*/
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)){
+            return false;
+        }
+        return true;
     }
 
     private void loginSession() {
         try {
-            if (!MyApplication.getInstance().getPrefManager().getPreferrence(Constance.KEY_AGENTID).isEmpty()) {
+            if (MyApplication.getInstance().getPrefManager().getPreferrence(Constance.KEY_AUTH).equals("true")) {
                 nextPage();
+            } else {
+                if (!MyApplication.getInstance().getPrefManager().getPreferrence(Constance.KEY_PIN).isEmpty()) {
+                    startActivityForResult(new Intent(AuthActivity.this, PinAuthenActivity.class), Constance.REQUEST_PIN_AUTHEN);
+                }
             }
         } catch (Exception ex) {
-
+            Log.e("session exception", ex.getMessage());
         }
     }
 
     private void nextPage() {
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        //startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        setResult(RESULT_OK);
         finish();
     }
 
@@ -186,6 +198,8 @@ public class AuthActivity extends BaseMvpActivity<AuthInterface.Presenter> imple
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constance.REQUEST_SETTINGS) {
             initialize();
+        } else if (requestCode == Constance.REQUEST_PIN_AUTHEN) {
+            nextPage();
         }
     }
 

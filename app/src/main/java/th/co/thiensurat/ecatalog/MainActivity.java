@@ -29,7 +29,9 @@ import th.co.thiensurat.ecatalog.auth.AuthActivity;
 import th.co.thiensurat.ecatalog.base.BaseMvpActivity;
 import th.co.thiensurat.ecatalog.catalog.CatalogFragment;
 import th.co.thiensurat.ecatalog.changepassword.ChangePasswordFragment;
+import th.co.thiensurat.ecatalog.network.ConnectionDetector;
 import th.co.thiensurat.ecatalog.pinview.PinActivity;
+import th.co.thiensurat.ecatalog.pinview.pinauthen.PinAuthenActivity;
 import th.co.thiensurat.ecatalog.profile.ProfileActivity;
 import th.co.thiensurat.ecatalog.registration.RegistrationFragment;
 import th.co.thiensurat.ecatalog.registration.general.GeneralFragment;
@@ -37,6 +39,7 @@ import th.co.thiensurat.ecatalog.reports.ReportFragment;
 import th.co.thiensurat.ecatalog.share.ShareFragment;
 import th.co.thiensurat.ecatalog.social.SocialActivity;
 import th.co.thiensurat.ecatalog.utils.Constance;
+import th.co.thiensurat.ecatalog.utils.CustomDialog;
 import th.co.thiensurat.ecatalog.utils.MyApplication;
 
 public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> implements MainInterface.View {
@@ -45,6 +48,8 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
     private ImageView imageViewProfile;
     private boolean clickBackAain;
     private MenuItem menuItemClicked;
+    private CustomDialog customDialog;
+
     @Override
     public MainInterface.Presenter createPresenter() {
         return MainPresenter.create();
@@ -67,7 +72,7 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
 
     @Override
     public void setupInstance() {
-
+        customDialog = new CustomDialog(this);
     }
 
     @Override
@@ -78,7 +83,25 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
 
     @Override
     public void initialize() {
-        loadHomePage();
+        boolean isNetworkAvailable = ConnectionDetector.isConnectingToInternet(MainActivity.this);
+        if (!isNetworkAvailable) {
+            customDialog.dialogNetworkError();
+        } else {
+            try {
+                if (MyApplication.getInstance().getPrefManager().getPreferrence(Constance.KEY_AUTH).equals("false")) {
+                    if (!MyApplication.getInstance().getPrefManager().getPreferrence(Constance.KEY_PIN).isEmpty()) {
+                        startActivityForResult(new Intent(MainActivity.this, PinAuthenActivity.class), Constance.REQUEST_PIN_AUTHEN);
+                    } else {
+                        startActivityForResult(new Intent(MainActivity.this, AuthActivity.class), Constance.REQUEST_AUTHEN);
+                    }
+                } else {
+                    loadHomePage();
+                }
+            } catch (Exception ex) {
+                Log.e("session exception", ex.getMessage());
+                startActivityForResult(new Intent(MainActivity.this, AuthActivity.class), Constance.REQUEST_AUTHEN);
+            }
+        }
     }
 
     @Override
@@ -94,6 +117,16 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
     @Override
     public void restoreView(Bundle savedInstanceState) {
         super.restoreView(savedInstanceState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constance.REQUEST_SETTINGS) {
+            initialize();
+        } else if (requestCode == Constance.REQUEST_AUTHEN || requestCode == Constance.REQUEST_PIN_AUTHEN) {
+            loadHomePage();
+        }
     }
 
     private void loadHomePage() {
@@ -211,9 +244,10 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
                 startActivityForResult(new Intent(getApplicationContext(), PinActivity.class), Constance.REQUEST_SET_PIN);
                 break;
             case R.id.menu_logout :
-                MyApplication.getInstance().getPrefManager().clear();
-                startActivity(new Intent(getApplicationContext(), AuthActivity.class));
-                finish();
+                //MyApplication.getInstance().getPrefManager().clear();
+                MyApplication.getInstance().getPrefManager().setPreferrence(Constance.KEY_AUTH, "false");
+                startActivityForResult(new Intent(getApplicationContext(), AuthActivity.class), Constance.REQUEST_AUTHEN);
+                //finish();
                 break;
             default: break;
         }
@@ -227,7 +261,7 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
                 return true;
             }
             this.clickBackAain = true;
-            Toast.makeText(MainActivity.this, "คลิกอีกครั้งเพื่อออกจากแอพพลิเคชั่น", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "กด BACK อีกครั้งเพื่อออกจากแอพ", Toast.LENGTH_LONG).show();
 
             new Handler().postDelayed(new Runnable() {
 
