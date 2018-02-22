@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import th.co.thiensurat.ecatalog.MainActivity;
 import th.co.thiensurat.ecatalog.R;
 import th.co.thiensurat.ecatalog.api.result.ItemAuth;
 import th.co.thiensurat.ecatalog.base.BaseMvpActivity;
+import th.co.thiensurat.ecatalog.utils.AnimateButton;
 import th.co.thiensurat.ecatalog.utils.Constance;
 import th.co.thiensurat.ecatalog.utils.CustomDialog;
 import th.co.thiensurat.ecatalog.utils.MyApplication;
@@ -58,13 +61,14 @@ public class PinAuthenActivity extends BaseMvpActivity<PinAuthenInterface.Presen
 
     @Override
     public void initialize() {
-
+        buttonChangeAccount.setOnClickListener( onChangeAccount() );
     }
 
     @BindView(R.id.profile_name) TextView textViewName;
     @BindView(R.id.pin_lock_view) PinLockView pinLockView;
     @BindView(R.id.profile_image) ImageView imageViewProfile;
     @BindView(R.id.indicator_dots) IndicatorDots indicatorDots;
+    @BindView(R.id.button_change_account) Button buttonChangeAccount;
     @Override
     public void bindView() {
         ButterKnife.bind(this);
@@ -130,6 +134,18 @@ public class PinAuthenActivity extends BaseMvpActivity<PinAuthenInterface.Presen
         //startActivity(new Intent(PinAuthenActivity.this, MainActivity.class));
         setResult(RESULT_OK);
         finish();
+    }
+
+    private View.OnClickListener onChangeAccount() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonChangeAccount.startAnimation(new AnimateButton().animbutton());
+                MyApplication.getInstance().getPrefManager().clear();
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        };
     }
 
     @Override

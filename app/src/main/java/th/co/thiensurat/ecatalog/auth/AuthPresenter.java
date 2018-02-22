@@ -56,6 +56,7 @@ public class AuthPresenter extends BaseMvpPresenter<AuthInterface.View> implemen
             public void onSuccess(AuthItemResultGroup result) {
                 if (result.getStatus().equals("SUCCESS")) {
                     getView().onDismiss();
+                    MyApplication.getInstance().getPrefManager().clear();
                     AuthenItemGroup authenItemGroup = ConvertAuthItem.createAuthItemGroupFromResult(result);
                     MyApplication.getInstance().getPrefManager().setProfile(authenItemGroup);
                     getView().onSuccess();

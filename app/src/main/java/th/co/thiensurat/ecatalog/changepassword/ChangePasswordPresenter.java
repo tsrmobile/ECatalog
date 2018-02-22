@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import th.co.thiensurat.ecatalog.api.ServiceManager;
 import th.co.thiensurat.ecatalog.base.BaseMvpPresenter;
+import th.co.thiensurat.ecatalog.utils.Constance;
+import th.co.thiensurat.ecatalog.utils.MyApplication;
 
 /**
  * Created by teerayut.k on 1/16/2018.
@@ -51,6 +53,7 @@ public class ChangePasswordPresenter extends BaseMvpPresenter<ChangePasswordInte
                 try {
                     JSONObject jsonObject = new JSONObject(gson.toJson(result));
                     if ("SUCCESS".equals(jsonObject.getString("status"))) {
+                        MyApplication.getInstance().getPrefManager().setPreferrence(Constance.KEY_PASSWORD, jsonObject.getString("password"));
                         getView().onDismiss();
                         getView().onSuccess(jsonObject.getString("message"));
                     } else if ("FAIL".equals(jsonObject.getString("status"))) {

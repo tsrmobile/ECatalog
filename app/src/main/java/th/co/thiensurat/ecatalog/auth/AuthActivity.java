@@ -143,28 +143,6 @@ public class AuthActivity extends BaseMvpActivity<AuthInterface.Presenter> imple
         nextPage();
     }
 
-    /*@Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK)){
-            if (clickBackAain) {
-                finish();
-                return true;
-            }
-            this.clickBackAain = true;
-            Toast.makeText(AuthActivity.this, "กด BACK อีกครั้งเพื่อออกจากแอพ", Toast.LENGTH_LONG).show();
-
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    clickBackAain=false;
-                }
-            }, 2000);
-            return false;
-        }
-        return true;
-    }*/
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)){
@@ -196,10 +174,17 @@ public class AuthActivity extends BaseMvpActivity<AuthInterface.Presenter> imple
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constance.REQUEST_SETTINGS) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == Constance.REQUEST_SETTINGS) {
+                initialize();
+            }
+
+            if (requestCode == Constance.REQUEST_PIN_AUTHEN) {
+                nextPage();
+            }
+        } else {
+            reload();
             initialize();
-        } else if (requestCode == Constance.REQUEST_PIN_AUTHEN) {
-            nextPage();
         }
     }
 
@@ -211,5 +196,14 @@ public class AuthActivity extends BaseMvpActivity<AuthInterface.Presenter> imple
                 startActivityForResult(new Intent(AuthActivity.this, ForgetPasswordActivity.class), Constance.REQUEST_FORGET);
             }
         };
+    }
+
+    public void reload() {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
     }
 }

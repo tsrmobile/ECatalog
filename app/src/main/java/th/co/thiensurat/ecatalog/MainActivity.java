@@ -125,6 +125,7 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
         if (requestCode == Constance.REQUEST_SETTINGS) {
             initialize();
         } else if (requestCode == Constance.REQUEST_AUTHEN || requestCode == Constance.REQUEST_PIN_AUTHEN) {
+            reload();
             loadHomePage();
         }
     }
@@ -171,6 +172,9 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
                 return true;
             }
         });
+
+        setHeaderMenu();
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         navigationView.inflateMenu(R.menu.main_menu);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.openDrawer, R.string.closeDrawer){
@@ -190,7 +194,6 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
 
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        setHeaderMenu();
     }
 
     private void handleSelectedMenu(MenuItem menuItem) {
@@ -241,12 +244,12 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
                 }
                 break;
             case R.id.menu_pin :
-                startActivityForResult(new Intent(getApplicationContext(), PinActivity.class), Constance.REQUEST_SET_PIN);
+                startActivityForResult(new Intent(MainActivity.this, PinActivity.class), Constance.REQUEST_SET_PIN);
                 break;
             case R.id.menu_logout :
                 //MyApplication.getInstance().getPrefManager().clear();
                 MyApplication.getInstance().getPrefManager().setPreferrence(Constance.KEY_AUTH, "false");
-                startActivityForResult(new Intent(getApplicationContext(), AuthActivity.class), Constance.REQUEST_AUTHEN);
+                startActivityForResult(new Intent(MainActivity.this, AuthActivity.class), Constance.REQUEST_AUTHEN);
                 //finish();
                 break;
             default: break;
@@ -287,5 +290,14 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void reload() {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
     }
 }
