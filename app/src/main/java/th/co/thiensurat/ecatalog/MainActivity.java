@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.thefinestartist.finestwebview.FinestWebView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -231,7 +234,8 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
                 }
                 break;
             case R.id.menu_social :
-                startActivityForResult(new Intent(getApplicationContext(), SocialActivity.class), Constance.REQUEST_SOCIAL);
+                //startActivityForResult(new Intent(getApplicationContext(), SocialActivity.class), Constance.REQUEST_SOCIAL);
+                socialLink();
                 break;
             case R.id.menu_profile :
                 startActivityForResult(new Intent(getApplicationContext(), ProfileActivity.class), Constance.REQUEST_PROFILE);
@@ -299,5 +303,30 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
         finish();
         overridePendingTransition(0, 0);
         startActivity(intent);
+    }
+
+    private void socialLink() {
+        String url = "http://app.thiensurat.co.th/TSROnlineMarketing/CreateLink";
+        new FinestWebView.Builder(this).theme(R.style.FinestWebViewTheme)
+                .titleDefault("SOCIAL LINK")
+                .showUrl(false)
+                .statusBarColorRes(R.color.colorPrimaryDark)
+                .toolbarColorRes(R.color.colorPrimary)
+                .titleColorRes(R.color.finestWhite)
+                .urlColorRes(R.color.colorAccent)
+                .iconDefaultColorRes(R.color.finestWhite)
+                .progressBarColorRes(R.color.finestWhite)
+                .stringResCopiedToClipboard(R.string.copied_to_clipboard)
+                .stringResCopiedToClipboard(R.string.copied_to_clipboard)
+                .stringResCopiedToClipboard(R.string.copied_to_clipboard)
+                .showSwipeRefreshLayout(true)
+                .swipeRefreshColorRes(R.color.colorPrimaryDark)
+                .menuSelector(R.drawable.selector_light_theme)
+                .menuTextGravity(Gravity.CENTER)
+                .menuTextPaddingRightRes(R.dimen.defaultMenuTextPaddingLeft)
+                .dividerHeight(0)
+                .gradientDivider(false)
+                .setCustomAnimations(R.anim.slide_up, R.anim.hold, R.anim.hold, R.anim.slide_down)
+                .show(url);
     }
 }

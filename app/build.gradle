@@ -7,8 +7,8 @@ android {
         applicationId "th.co.thiensurat.ecatalog"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 5
-        versionName "1.2.1"
+        versionCode 6
+        versionName "1.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -39,9 +39,10 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile 'com.orhanobut:logger:1.15'
     compile 'com.jakewharton:butterknife:8.6.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.android.support:support-v4:26.+'
     compile 'com.github.bumptech.glide:glide:3.8.0'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.thefinestartist:finestwebview:1.2.7'
     compile 'com.firebase:firebase-jobdispatcher:0.8.5'
     compile 'com.andrognito.pinlockview:pinlockview:2.1.0'
     compile 'com.google.firebase:firebase-messaging:11.8.0'
