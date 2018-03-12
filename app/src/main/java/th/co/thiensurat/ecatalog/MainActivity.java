@@ -326,6 +326,7 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
                 .menuTextPaddingRightRes(R.dimen.defaultMenuTextPaddingLeft)
                 .dividerHeight(0)
                 .gradientDivider(false)
+                .backPressToClose(true)
                 .setCustomAnimations(R.anim.slide_up, R.anim.hold, R.anim.hold, R.anim.slide_down)
                 .show(url);
     }
