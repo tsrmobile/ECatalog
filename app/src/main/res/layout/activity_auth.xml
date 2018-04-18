@@ -50,7 +50,7 @@
                         android:drawableTint="@color/DarkGray"
                         android:paddingLeft="8dp"
                         android:gravity="left|center"
-                        android:inputType="number"
+                        android:inputType="textPassword"
                         android:imeOptions="actionNext"
                         android:hint="ชื่อผู้ใช้"
                         android:backgroundTint="@android:color/transparent"/>

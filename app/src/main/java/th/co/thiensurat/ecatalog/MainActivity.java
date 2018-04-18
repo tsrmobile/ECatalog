@@ -315,7 +315,7 @@ public class MainActivity extends BaseMvpActivity<MainInterface.Presenter> imple
                 .titleColorRes(R.color.finestWhite)
                 .urlColorRes(R.color.colorAccent)
                 .iconDefaultColorRes(R.color.finestWhite)
-                .progressBarColorRes(R.color.finestWhite)
+                .progressBarColorRes(R.color.colorAccent)
                 .stringResCopiedToClipboard(R.string.copied_to_clipboard)
                 .stringResCopiedToClipboard(R.string.copied_to_clipboard)
                 .stringResCopiedToClipboard(R.string.copied_to_clipboard)

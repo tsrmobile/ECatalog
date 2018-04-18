@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -198,6 +200,8 @@ public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> i
 
     private void setToolbar() {
         toolbar.setTitle(productItem.getProductName());
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.colorPrimaryDark));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -211,7 +215,9 @@ public class DetailActivity extends BaseMvpActivity<DetailInterface.Presenter> i
         symbols.setDecimalSeparator(',');
         decimalFormat = new DecimalFormat("###,###,###,###", symbols);
         setImageView(productItem.getProductImage());
-        textViewDetail.setText(productItem.getProductDetail());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textViewDetail.setText(Html.fromHtml(productItem.getProductDetail(), Html.FROM_HTML_MODE_COMPACT));
+        }
         viewPrice.setText(String.format("%,.0f", Float.parseFloat(productItem.getProductPrice())) + ".-");
         viewQty.setText(String.valueOf(qty));
         if (productItem.getProductDiscount().equals("0")) {
